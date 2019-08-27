@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description='unistd.h syscall extractor')
 
 parser.add_argument('-o', '--output', help='File to save the syscalls to', required=True)
 parser.add_argument('-f', '--format', help='File format of the syscalls (json, csv)', required=True)
-parser.add_argument('-i', '--input', help='Path to the unistd.h header file', default='/usr/include/asm-generic/unistd.h')
+parser.add_argument('-i', '--input', help='Path to the unistd.h header file', default='/usr/include/x86_64-linux-gnu/asm/unistd_64.h')
 
 args = parser.parse_args()
 
@@ -17,8 +17,8 @@ matches = re.findall(r'__NR_(.+) ([0-9]+)', source)
 syscalls = []
 for match in matches:
     syscalls.append({
-        'id': match[1],
-        'name': match[0]
+        'id': match[1].trim(),
+        'name': match[0].trim()
     })
 if args.format == 'json':
     with open(args.output, 'w') as file:
